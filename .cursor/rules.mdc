@@ -1,0 +1,21 @@
+---
+description: Project rules
+globs: ["**/*"]
+---
+
+## Architecture & Code Quality
+- Use named exports always.
+
+## Design Principles
+- Must follow single responsibility principal.
+- Must follow DRY.
+
+## Documentation
+- Must include IDE IntelliSense-friendly comments and descriptions for each component, hook, and function.
+
+## Testing
+- Must have 100% test coverage.
+- Test case descriptions must start with a capital letter.
+
+## Naming
+- Use dash-case names for files.

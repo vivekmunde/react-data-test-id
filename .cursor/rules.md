@@ -1,1 +1,0 @@
-- Use dash-case names for files.
