@@ -24,6 +24,8 @@
     "test:coverage": "rimraf coverage && vitest run --coverage --config vitest-config.ts",
     "lint": "eslint --config eslint-config.js \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "prepare": "husky install"
   },
   "peerDependencies": {
@@ -41,6 +43,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "husky": "^9.1.7",
     "jsdom": "^24.0.0",
+    "prettier": "^3.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rimraf": "^5.0.5",
