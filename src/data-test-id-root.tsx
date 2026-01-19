@@ -7,12 +7,22 @@ import { normalizeDataTestIdValue } from "./data-test-id-utils";
  * Props for the DataTestIdRoot component.
  */
 export type TDataTestIdRootProps = {
+  /**
+   * Single React element that receives the data attribute.
+   */
   children: React.ReactNode;
+  /**
+   * Root scope value used as the base for nested identifiers.
+   */
   value: string;
 };
 
 /**
- * Sets the root data-testid value for descendant DataTestId components.
+ * Sets the root scope value for descendant DataTestId components.
+ *
+ * This component normalizes the provided value using configuration and applies
+ * it to the child element. It also stores the normalized value in context so
+ * nested DataTestId components can compose unique identifiers.
  */
 const DataTestIdRoot: React.FC<TDataTestIdRootProps> = ({ children, value, ...props }) => {
   const { enabled, dataAttributeName, spaceReplacement, caseTransform } =

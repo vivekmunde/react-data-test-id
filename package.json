@@ -1,7 +1,7 @@
 {
   "name": "react-data-test-id",
   "version": "0.1.0",
-  "description": "DataTestId attribute setter for React applications",
+  "description": "A context-based utility for composing predictable & unique test IDs in React apps.",
   "license": "MIT",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",

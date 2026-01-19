@@ -2,7 +2,13 @@
  * Props for joining data-testid values.
  */
 export type TJoinDataTestIdArgs = {
+  /**
+   * Ordered list of scope segments to join.
+   */
   values: (string | null | undefined)[];
+  /**
+   * Separator string placed between segments.
+   */
   separator: string;
 };
 
@@ -10,8 +16,17 @@ export type TJoinDataTestIdArgs = {
  * Props for normalizing data-testid values.
  */
 export type TNormalizeDataTestIdArgs = {
+  /**
+   * Raw segment value to normalize.
+   */
   value: string;
+  /**
+   * Optional replacement for whitespace characters.
+   */
   spaceReplacement?: string;
+  /**
+   * Optional case transform applied after spacing rules.
+   */
   caseTransform?: "lower" | "upper";
 };
 
@@ -19,7 +34,13 @@ export type TNormalizeDataTestIdArgs = {
  * Props for replacing spaces in a value.
  */
 export type TReplaceSpaceArgs = {
+  /**
+   * Raw value that may contain whitespace.
+   */
   value: string;
+  /**
+   * Replacement string for each whitespace character.
+   */
   spaceReplacement?: string;
 };
 
@@ -27,7 +48,13 @@ export type TReplaceSpaceArgs = {
  * Props for converting a value to a specific case.
  */
 export type TConvertCaseArgs = {
+  /**
+   * Value to convert to the requested case.
+   */
   value: string;
+  /**
+   * Optional target case for conversion.
+   */
   caseTransform?: "lower" | "upper";
 };
 
