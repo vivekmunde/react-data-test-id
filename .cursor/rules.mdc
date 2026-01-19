@@ -16,6 +16,13 @@ globs: ["**/*"]
 ## Testing
 - Must have 100% test coverage.
 - Test case descriptions must start with a capital letter.
+- Each test case should test a single functionality.
 
 ## Naming
 - Use dash-case names for files.
+- All types should have prefix T.
+- All props types should have suffix Props.
+- All function argument types should have suffix Args.
+
+## Components
+- All components, hooks, and functions must define the props type separately and should export.
