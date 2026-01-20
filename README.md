@@ -56,24 +56,23 @@ Generated HTML:
 - Effortless uniqueness because the scope hierarchy prevents collisions.
 - Local responsibility because each component owns only its own `value` segment.
 
-## How it works
+## How it works?
 
 Workflow summary:
 
-1. `DataTestIdRoot` starts a scope at the page or feature or component boundary.
-2. `DataTestId` appends segments and applies the value to its child as components render deeper in the tree.
-3. Each component inside `DataTestId` is applied with its own id as per its hierarchical scope.
+1. `DataTestIdRoot` starts a scope at a page, feature, or component boundary.
+2. `DataTestId` appends a segment and applies the resulting ID to its child.
+3. Each nested `DataTestId` extends the scope so leaf elements get a unique, hierarchical ID.
 
 ```
 App
-└─ <DataTestIdRoot value="app">
-  <div> => data-testid=app
-   └─ <DataTestId value="settings> => app-settings
-      <div> => data-testid=app-settings
-      └─ <DataTestId value="profile> => app-settings-profile
-          <div> => data-testid=app-settings-profile
-         └─ <DataTestId value="save"> => app-settings-profile-save
-            └─ <button /> => data-testid=app-settings-profile-save
+└─ DataTestIdRoot(value="app")
+   └─ DataTestId(value="settings")
+      └─ DataTestId(value="profile")
+         └─ DataTestId(value="save")
+            └─ <button />
+
+Resulting ID: "app-settings-profile-save"
 ```
 
 Example:
@@ -114,7 +113,7 @@ Generated HTML:
 
 ## What is scope?
 
-A scope is the current path of segments that describe where a component lives in the UI hierarchy. Each segment is a meaningful label like `page`, `section`, or `button`. The final `data-testid` is the joined scope path as per its hierarchy.
+A scope is the current path of segments that describe where a component lives in the UI hierarchy. Each segment is a meaningful label like `page`, `section`, or `button`. The final `data-testid` is the joined scope path.
 
 Example:
 
@@ -156,7 +155,7 @@ yarn add react-data-test-id
 
 ### Page
 
-The core components like Label, Value & Item will have the data test id set inside them.
+Core components like Label, Value, and Item apply `DataTestId` internally.
 
 ```tsx
 import React from "react";
@@ -209,7 +208,7 @@ const ProfilePage = () => {
           <Label>Name</Label>
           <Value>John</Value>
         </Item>
-        <Item value="email">
+        <Item name="email">
           <Label>Email</Label>
           <Value>john@example.com</Value>
         </Item>
@@ -236,7 +235,7 @@ Generated HTML:
 
 ### Form
 
-The core components like Input, Button & Field will have the data test id set inside them.
+Core components like Input, Button, and Field apply `DataTestId` internally.
 
 ```tsx
 import React from "react";
@@ -304,9 +303,9 @@ const EditProfilePage = () => {
         </Field>
         <Field name="email">
           <Label>Email</Label>
-          <input type="text" />
+          <Input type="text" />
         </Field>
-        <DataTestId name="save">
+        <DataTestId value="save">
           <Button type="button">Save</Button>
         </DataTestId>
       </form>
@@ -553,7 +552,138 @@ Generated HTML:
 </div>
 ```
 
-### DataTestIdAttribute
+## Best practices
+
+- Apply `DataTestId` inside core UI components (Button, Input, Label, Select) so every usage is automatically tagged.
+
+### Example
+
+```tsx
+const Input = (props) => {
+  return (
+    <DataTestId value="input">
+      <input {...props} />
+    </DataTestId>
+  );
+};
+```
+
+```tsx
+const Button = (props) => {
+  return (
+    <DataTestId value="button">
+      <button {...props} />
+    </DataTestId>
+  );
+};
+```
+
+```tsx
+const Toolbar = () => {
+  return (
+    <DataTestIdRoot value="toolbar">
+      <Button type="button">Refresh</Button>
+    </DataTestIdRoot>
+  );
+};
+```
+
+Generated HTML:
+
+```html
+<button data-testid="toolbar-button">Refresh</button>
+```
+
+- Add IDs at multiple levels of the hierarchy; the scope chain keeps them unique without manual concatenation.
+
+### Example
+
+```tsx
+<DataTestIdRoot value="orders">
+  <DataTestId value="list">
+    <DataTestId value="row">
+      <DataTestId value="status">
+        <span>Shipped</span>
+      </DataTestId>
+    </DataTestId>
+  </DataTestId>
+</DataTestIdRoot>
+```
+
+Generated HTML:
+
+```html
+<span data-testid="orders-list-row-status">Shipped</span>
+```
+
+- Use meaningful, context‑based names like `profile`, `age`, `email`, `save`, or `filters`.
+
+### Example
+
+```tsx
+<DataTestIdRoot value="profile">
+  <DataTestId value="age">
+    <input type="number" />
+  </DataTestId>
+  <DataTestId value="save">
+    <button type="button">Save</button>
+  </DataTestId>
+</DataTestIdRoot>
+```
+
+Generated HTML:
+
+```html
+<input data-testid="profile-age" /> <button data-testid="profile-save">Save</button>
+```
+
+- Treat scope segments like a path: page → section → component → element.
+
+### Example
+
+```tsx
+<DataTestIdRoot value="dashboard">
+  <DataTestId value="filters">
+    <DataTestId value="date-range">
+      <input type="text" />
+    </DataTestId>
+  </DataTestId>
+</DataTestIdRoot>
+```
+
+Generated HTML:
+
+```html
+<input data-testid="dashboard-filters-date-range" />
+```
+
+- Avoid over‑specific or visual names; prefer intent‑based names that survive layout changes.
+
+### Example
+
+```tsx
+<DataTestIdRoot value="checkout">
+  <DataTestId value="summary">
+    <DataTestId value="total">
+      <span>$42.00</span>
+    </DataTestId>
+  </DataTestId>
+</DataTestIdRoot>
+```
+
+Generated HTML:
+
+```html
+<span data-testid="checkout-summary-total">$42.00</span>
+```
+
+## Internal building blocks
+
+### Components
+
+#### DataTestIdAttribute
+
+`DataTestIdAttribute` is usually used internally by `DataTestIdRoot` and `DataTestId`. You will rarely need to use it directly unless you want to apply the current scope to a single child element by hand.
 
 Applies the current scope to a single child element. Useful when a component already has a scope from its parent but needs to set the attribute explicitly.
 
@@ -571,9 +701,11 @@ Generated HTML:
 <input type="text" data-testid="search" />
 ```
 
-## Core API: Hooks
+### Hooks
 
-### useDataTestIdConfiguration
+These hooks are mostly used internally, but they are available if you need to read the current configuration or scope in custom components.
+
+#### useDataTestIdConfiguration
 
 Returns the current configuration from context.
 
@@ -581,7 +713,7 @@ Returns the current configuration from context.
 const { enabled, dataAttributeName } = useDataTestIdConfiguration();
 ```
 
-### useDataTestIdScope
+#### useDataTestIdScope
 
 Returns the current scope string.
 
@@ -589,7 +721,7 @@ Returns the current scope string.
 const scope = useDataTestIdScope();
 ```
 
-### useTransformers
+#### useTransformers
 
 Applies configured transformers to a value.
 
@@ -597,20 +729,13 @@ Applies configured transformers to a value.
 const transformed = useTransformers("Profile");
 ```
 
-### useJoinScopes
+#### useJoinScopes
 
 Joins scope segments using the configured separator.
 
 ```tsx
 const joined = useJoinScopes(["app", "nav", "item"]);
 ```
-
-## Testing tips
-
-- Prefer selecting by `data-testid` to avoid brittle DOM queries.
-- Keep scope segments short and descriptive.
-- Apply `DataTestId` at leaf components (buttons, inputs, labels).
-- Use `DataTestIdScope` for layout boundaries (sections, panels, modals).
 
 ## License
 
