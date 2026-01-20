@@ -13,24 +13,114 @@ type TDataTestIdAttributeProps = {
 };
 
 /**
- * Applies the current scope value to the child using the configured attribute name.
- *
- * @param children - Child element that receives the attribute.
+ * Arguments for the useIsValidNode hook.
  */
-const DataTestIdAttribute: React.FC<TDataTestIdAttributeProps> = ({ children }) => {
+type TUseIsValidNodeArgs = {
+  /**
+   * Child content to validate.
+   */
+  children: React.ReactNode;
+};
+
+/**
+ * Arguments for the useIsSingleNode hook.
+ */
+type TUseIsSingleNodeArgs = {
+  /**
+   * Child content to validate.
+   */
+  children: React.ReactNode;
+};
+
+/**
+ * Arguments for the useIsNotFragment hook.
+ */
+type TUseIsNotFragmentArgs = {
+  /**
+   * Child content to validate.
+   */
+  children: React.ReactNode;
+};
+
+/**
+ * Arguments for the useIsValidChild hook.
+ */
+type TUseIsValidChildArgs = {
+  /**
+   * Child content to validate.
+   */
+  children: React.ReactNode;
+};
+
+/**
+ * Ensures the child is a valid React element.
+ *
+ * @param children - Child content to validate.
+ */
+const useIsValidNode = ({ children }: TUseIsValidNodeArgs): void => {
+  if (!React.isValidElement(children)) {
+    throw new Error("DataTestIdAttribute expects a valid React element as its child.");
+  }
+};
+
+/**
+ * Ensures only a single child is provided.
+ *
+ * @param children - Child content to validate.
+ */
+const useIsSingleNode = ({ children }: TUseIsSingleNodeArgs): void => {
+  if (Array.isArray(children)) {
+    throw new Error("DataTestIdAttribute expects a single React element as its child.");
+  }
+};
+
+/**
+ * Blocks React.Fragment as a valid child element.
+ *
+ * @param children - Child content to validate.
+ */
+const useIsNotFragment = ({ children }: TUseIsNotFragmentArgs): void => {
+  if (React.isValidElement(children) && children.type === React.Fragment) {
+    throw new Error("DataTestIdAttribute does not accept React.Fragment as its child.");
+  }
+};
+
+/**
+ * Ensures the child passes all DataTestIdAttribute validation rules.
+ *
+ * @param children - Child content to validate.
+ */
+const useIsValidChild = ({ children }: TUseIsValidChildArgs): void => {
+  useIsSingleNode({ children });
+  useIsNotFragment({ children });
+  useIsValidNode({ children });
+};
+
+/**
+ * Applies the data test ID attribute to the validated child element.
+ *
+ * @param children - Child element to decorate.
+ * @param children - Child element to decorate.
+ */
+const DataTestIdAttributeSetter: React.FC<TDataTestIdAttributeProps> = ({ children }) => {
   const scopeValue = useContext(DataTestIdScopeContext);
   const { dataAttributeName } = useContext(DataTestIdConfigurationContext);
-
-  if (!React.isValidElement(children)) {
-    console.error("DataTestIdAttribute expects a valid React element as its child.");
-    return null;
-  }
-
   const childWithAttribute = React.cloneElement(children as ReactElement, {
     [dataAttributeName]: scopeValue
   });
 
   return childWithAttribute;
+};
+
+/**
+ * Applies the current scope value to the child using the configured attribute name.
+ *
+ * @param children - Child element that receives the attribute.
+ */
+const DataTestIdAttribute: React.FC<TDataTestIdAttributeProps> = ({ children }) => {
+  useIsValidChild({ children });
+
+  return <DataTestIdAttributeSetter>{children}</DataTestIdAttributeSetter>;
 };
 
 export { DataTestIdAttribute };

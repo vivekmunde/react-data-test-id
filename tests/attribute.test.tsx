@@ -59,28 +59,76 @@ describe("DataTestIdAttribute", () => {
     expect(button?.getAttribute("data-testid")).toBe("scope-value");
   });
 
-  it("Returns null and logs when the child is not a React element", () => {
-    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
-    const { container } = render(
-      <DataTestIdConfigurationContext.Provider
-        value={{
-          enabled: true,
-          dataAttributeName: "data-testid",
-          scopeSeparator: "-",
-          scopeTrasnformers: []
-        }}
-      >
-        <DataTestIdScopeContext.Provider value="scope-value">
-          <DataTestIdAttribute>Invalid child</DataTestIdAttribute>
-        </DataTestIdScopeContext.Provider>
-      </DataTestIdConfigurationContext.Provider>
-    );
+  it("Throws when the child is not a React element", () => {
+    const renderInvalid = () =>
+      render(
+        <DataTestIdConfigurationContext.Provider
+          value={{
+            enabled: true,
+            dataAttributeName: "data-testid",
+            scopeSeparator: "-",
+            scopeTrasnformers: []
+          }}
+        >
+          <DataTestIdScopeContext.Provider value="scope-value">
+            <DataTestIdAttribute>Invalid child</DataTestIdAttribute>
+          </DataTestIdScopeContext.Provider>
+        </DataTestIdConfigurationContext.Provider>
+      );
 
-    expect(container.firstChild).toBeNull();
-    expect(errorSpy).toHaveBeenCalledWith(
+    expect(renderInvalid).toThrowError(
       "DataTestIdAttribute expects a valid React element as its child."
     );
+  });
 
-    errorSpy.mockRestore();
+  it("Throws when multiple children are provided", () => {
+    const renderInvalid = () =>
+      render(
+        <DataTestIdConfigurationContext.Provider
+          value={{
+            enabled: true,
+            dataAttributeName: "data-testid",
+            scopeSeparator: "-",
+            scopeTrasnformers: []
+          }}
+        >
+          <DataTestIdScopeContext.Provider value="scope-value">
+            <DataTestIdAttribute>
+              <span>A</span>
+              <span>B</span>
+            </DataTestIdAttribute>
+          </DataTestIdScopeContext.Provider>
+        </DataTestIdConfigurationContext.Provider>
+      );
+
+    expect(renderInvalid).toThrowError(
+      "DataTestIdAttribute expects a single React element as its child."
+    );
+  });
+
+  it("Throws when a fragment is provided as the child", () => {
+    const renderInvalid = () =>
+      render(
+        <DataTestIdConfigurationContext.Provider
+          value={{
+            enabled: true,
+            dataAttributeName: "data-testid",
+            scopeSeparator: "-",
+            scopeTrasnformers: []
+          }}
+        >
+          <DataTestIdScopeContext.Provider value="scope-value">
+            <DataTestIdAttribute>
+              <React.Fragment>
+                <span>A</span>
+              </React.Fragment>
+            </DataTestIdAttribute>
+          </DataTestIdScopeContext.Provider>
+        </DataTestIdConfigurationContext.Provider>
+      );
+
+    expect(renderInvalid).toThrowError(
+      "DataTestIdAttribute does not accept React.Fragment as its child."
+    );
   });
 });
