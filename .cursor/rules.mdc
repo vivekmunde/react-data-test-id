@@ -7,6 +7,8 @@ globs: ["**/*"]
 - Use named exports only.
 - Export all intended public members at the end of each file.
 - Declare each React context in its own dedicated file.
+- Create a dedicated hook that returns each context value.
+- Read context values only through their dedicated hooks.
 
 ## Design Principles
 - Follow the Single Responsibility Principle.
@@ -26,7 +28,7 @@ globs: ["**/*"]
 
 ## Naming
 - Use dash-case for file names.
-- Avoid `data-test-id` as a file name prefix.
+- Avoid `data-test-id` as a file name prefix or anywhere in file names.
 - Prefix all type aliases with `T`.
 - Suffix all props types with `Props`.
 - Suffix all function argument types with `Args`.
