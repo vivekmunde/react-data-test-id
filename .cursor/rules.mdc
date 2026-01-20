@@ -21,7 +21,8 @@ globs: ["**/*"]
 - Maintain 100% test coverage.
 - Start every test case description with a capital letter.
 - Ensure each test case validates a single behavior.
-- Prefer importing from `src/index` in tests; use direct file imports only when necessary.
+- Prefer importing from `src` in tests; use direct file imports only when necessary.
+- In tests, validate default behavior first, then cover custom values.
 
 ## Naming
 - Use dash-case for file names.
