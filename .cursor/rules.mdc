@@ -4,25 +4,26 @@ globs: ["**/*"]
 ---
 
 ## Architecture & Code Quality
-- Use named exports always.
+- Use named exports only.
+- Export all intended public members at the end of each file.
 
 ## Design Principles
-- Must follow single responsibility principal.
-- Must follow DRY.
+- Follow the Single Responsibility Principle.
+- Follow DRY (Do not repeat yourself).
 
 ## Documentation
-- Must include IDE IntelliSense-friendly comments and descriptions for each component, hook, and function.
+- Add IDE IntelliSense-friendly comments and descriptions for every component, hook, and function.
 
 ## Testing
-- Must have 100% test coverage.
-- Test case descriptions must start with a capital letter.
-- Each test case should test a single functionality.
+- Maintain 100% test coverage.
+- Start every test case description with a capital letter.
+- Ensure each test case validates a single behavior.
 
 ## Naming
-- Use dash-case names for files.
-- All types should have prefix T.
-- All props types should have suffix Props.
-- All function argument types should have suffix Args.
+- Use dash-case for file names.
+- Prefix all type aliases with `T`.
+- Suffix all props types with `Props`.
+- Suffix all function argument types with `Args`.
 
 ## Components
-- All components, hooks, and functions must define the props type separately and should export.
+- Define and export a dedicated props type for every component, hook, and function.
