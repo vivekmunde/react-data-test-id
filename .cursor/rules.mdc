@@ -14,6 +14,7 @@ globs: ["**/*"]
 ## Documentation
 - Add IDE IntelliSense-friendly comments and descriptions for every component, hook, and function.
 - Document every member of a type, props object, or argument object with a clear comment.
+- Add a clear comment for every function argument.
 
 ## Testing
 - Maintain 100% test coverage.
