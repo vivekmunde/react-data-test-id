@@ -1,10 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  convertToLowerCase,
-  convertToUpperCase,
-  replaceSpaceWith,
-  replaceWith
-} from "../src";
+import { convertToLowerCase, convertToUpperCase, replaceSpaceWith, replaceWith } from "../src";
 
 describe("transformers", () => {
   it("Converts values to lower case", () => {

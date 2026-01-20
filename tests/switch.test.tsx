@@ -1,17 +1,17 @@
 import { render } from "@testing-library/react";
 import React from "react";
 import { describe, expect, it } from "vitest";
-import { DataTestIdConfigurationContext } from "../src/configuration-context";
-import { DataTestIdSwitch } from "../src/switch";
+import { DataTestIdConfigurationContext, DataTestIdSwitch } from "../src";
 
 describe("DataTestIdSwitch", () => {
-  it("Renders On when enabled", () => {
+  it("Renders On when enabled by default", () => {
     const { container } = render(
       <DataTestIdConfigurationContext.Provider
         value={{
           enabled: true,
+          dataAttributeName: "data-testid",
           scopeSeparator: "-",
-          dataAttributeName: "data-testid"
+          scopeTrasnformers: []
         }}
       >
         <DataTestIdSwitch.On>
@@ -32,8 +32,9 @@ describe("DataTestIdSwitch", () => {
       <DataTestIdConfigurationContext.Provider
         value={{
           enabled: false,
+          dataAttributeName: "data-testid",
           scopeSeparator: "-",
-          dataAttributeName: "data-testid"
+          scopeTrasnformers: []
         }}
       >
         <DataTestIdSwitch.On>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { defaultConfiguration } from "../src/configuration";
+import { defaultConfiguration } from "../src";
 
 describe("Configuration defaults", () => {
   it("Sets enabled to true", () => {
