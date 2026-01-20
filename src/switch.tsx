@@ -32,11 +32,11 @@ const DataTestIdSwitchOn: React.FC<TDataTestIdSwitchOnProps> = ({ children }) =>
    */
   const { enabled } = useContext(DataTestIdConfigurationContext);
 
-  if (!enabled) {
-    return null;
+  if (enabled) {
+    return children;
   }
 
-  return <React.Fragment>{children}</React.Fragment>;
+  return null;
 };
 
 /**
@@ -54,7 +54,7 @@ const DataTestIdSwitchOff: React.FC<TDataTestIdSwitchOffProps> = ({ children }) 
     return null;
   }
 
-  return <React.Fragment>{children}</React.Fragment>;
+  return children;
 };
 
 /**
