@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import { DataTestIdScopeContext } from "./scope-context";
 import { useJoinScopes } from "./use-join-scopes";
+import { useDataTestIdScope } from "./use-scope";
 import { useTransformers } from "./use-transformers";
 
 /**
@@ -24,7 +25,7 @@ type TDataTestIdScopeProps = {
  * @param children - Child nodes rendered within the derived scope.
  */
 const DataTestIdScope: React.FC<TDataTestIdScopeProps> = ({ value, children }) => {
-  const parentScope = useContext(DataTestIdScopeContext);
+  const parentScope = useDataTestIdScope();
   const transformedScope = useTransformers(value);
   const currentScope = useJoinScopes([parentScope, transformedScope]);
 

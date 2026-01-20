@@ -23,5 +23,7 @@ export {
   replaceSpaceWith,
   replaceWith
 } from "./transformers";
+export { useDataTestIdConfiguration } from "./use-configuration";
 export { useJoinScopes } from "./use-join-scopes";
+export { useDataTestIdScope } from "./use-scope";
 export { useTransformers } from "./use-transformers";

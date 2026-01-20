@@ -1,14 +1,19 @@
 import { render } from "@testing-library/react";
-import React, { useContext } from "react";
+import React from "react";
 import { describe, expect, it } from "vitest";
-import { DataTestIdConfigurationContext, DataTestIdScope, DataTestIdScopeContext } from "../src";
+import {
+  DataTestIdConfigurationContext,
+  DataTestIdScope,
+  DataTestIdScopeContext,
+  useDataTestIdScope
+} from "../src";
 
 describe("DataTestIdScope", () => {
   it("Provides a scope using the default separator", () => {
     const values: Array<string> = [];
 
     const CaptureScope = () => {
-      values.push(useContext(DataTestIdScopeContext));
+      values.push(useDataTestIdScope());
       return null;
     };
 
@@ -34,7 +39,7 @@ describe("DataTestIdScope", () => {
     const values: Array<string> = [];
 
     const CaptureScope = () => {
-      values.push(useContext(DataTestIdScopeContext));
+      values.push(useDataTestIdScope());
       return null;
     };
 

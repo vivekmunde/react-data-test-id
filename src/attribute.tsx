@@ -1,6 +1,6 @@
-import React, { type ReactElement, useContext } from "react";
-import { DataTestIdConfigurationContext } from "./configuration-context";
-import { DataTestIdScopeContext } from "./scope-context";
+import React, { type ReactElement } from "react";
+import { useDataTestIdConfiguration } from "./use-configuration";
+import { useDataTestIdScope } from "./use-scope";
 
 /**
  * Props for the DataTestIdAttribute component.
@@ -100,11 +100,10 @@ const useIsValidChild = ({ children }: TUseIsValidChildArgs): void => {
  * Applies the data test ID attribute to the validated child element.
  *
  * @param children - Child element to decorate.
- * @param children - Child element to decorate.
  */
 const DataTestIdAttributeSetter: React.FC<TDataTestIdAttributeProps> = ({ children }) => {
-  const scopeValue = useContext(DataTestIdScopeContext);
-  const { dataAttributeName } = useContext(DataTestIdConfigurationContext);
+  const scopeValue = useDataTestIdScope();
+  const { dataAttributeName } = useDataTestIdConfiguration();
   const childWithAttribute = React.cloneElement(children as ReactElement, {
     [dataAttributeName]: scopeValue
   });

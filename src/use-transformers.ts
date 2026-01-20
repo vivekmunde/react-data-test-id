@@ -1,5 +1,5 @@
-import { useContext, useMemo } from "react";
-import { DataTestIdConfigurationContext } from "./configuration-context";
+import { useMemo } from "react";
+import { useDataTestIdConfiguration } from "./use-configuration";
 
 /**
  * Hook that applies configured transformers to a value.
@@ -7,7 +7,7 @@ import { DataTestIdConfigurationContext } from "./configuration-context";
  * @param value - Raw input value to transform.
  */
 const useTransformers = (value: string): string => {
-  const { scopeTrasnformers } = useContext(DataTestIdConfigurationContext);
+  const { scopeTrasnformers } = useDataTestIdConfiguration();
 
   const transformedValue = useMemo(() => {
     if (!scopeTrasnformers || scopeTrasnformers.length === 0) {
@@ -18,7 +18,7 @@ const useTransformers = (value: string): string => {
       (currentValue, transformer) => transformer(currentValue),
       value
     );
-  }, [value]);
+  }, [scopeTrasnformers, value]);
 
   return transformedValue;
 };

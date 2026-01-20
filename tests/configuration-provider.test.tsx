@@ -1,14 +1,14 @@
 import { render } from "@testing-library/react";
-import React, { useContext } from "react";
+import React from "react";
 import { describe, expect, it } from "vitest";
-import { DataTestIdConfigurationContext, DataTestIdConfigurationProvider } from "../src";
+import { DataTestIdConfigurationProvider, useDataTestIdConfiguration } from "../src";
 
 describe("DataTestIdConfigurationProvider", () => {
   it("Provides default values when no overrides are supplied", () => {
     const values: Array<unknown> = [];
 
     const CaptureDefaults = () => {
-      values.push(useContext(DataTestIdConfigurationContext));
+      values.push(useDataTestIdConfiguration());
       return null;
     };
 
@@ -30,7 +30,7 @@ describe("DataTestIdConfigurationProvider", () => {
     const values: Array<unknown> = [];
 
     const CaptureEnabled = () => {
-      values.push(useContext(DataTestIdConfigurationContext));
+      values.push(useDataTestIdConfiguration());
       return null;
     };
 
@@ -52,7 +52,7 @@ describe("DataTestIdConfigurationProvider", () => {
     const values: Array<unknown> = [];
 
     const CaptureAttributeName = () => {
-      values.push(useContext(DataTestIdConfigurationContext));
+      values.push(useDataTestIdConfiguration());
       return null;
     };
 
@@ -74,7 +74,7 @@ describe("DataTestIdConfigurationProvider", () => {
     const values: Array<unknown> = [];
 
     const CaptureSeparator = () => {
-      values.push(useContext(DataTestIdConfigurationContext));
+      values.push(useDataTestIdConfiguration());
       return null;
     };
 
@@ -97,7 +97,7 @@ describe("DataTestIdConfigurationProvider", () => {
     const toUpper = (value: string) => value.toUpperCase();
 
     const CaptureTransformers = () => {
-      values.push(useContext(DataTestIdConfigurationContext));
+      values.push(useDataTestIdConfiguration());
       return null;
     };
 

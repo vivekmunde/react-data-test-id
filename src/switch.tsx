@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { DataTestIdConfigurationContext } from "./configuration-context";
+import React from "react";
+import { useDataTestIdConfiguration } from "./use-configuration";
 
 /**
  * Props for the DataTestIdSwitchOn component.
@@ -30,7 +30,7 @@ const DataTestIdSwitchOn: React.FC<TDataTestIdSwitchOnProps> = ({ children }) =>
   /**
    * Read the enabled flag from configuration.
    */
-  const { enabled } = useContext(DataTestIdConfigurationContext);
+  const { enabled } = useDataTestIdConfiguration();
 
   if (enabled) {
     return children;
@@ -48,7 +48,7 @@ const DataTestIdSwitchOff: React.FC<TDataTestIdSwitchOffProps> = ({ children }) 
   /**
    * Read the enabled flag from configuration.
    */
-  const { enabled } = useContext(DataTestIdConfigurationContext);
+  const { enabled } = useDataTestIdConfiguration();
 
   if (enabled) {
     return null;

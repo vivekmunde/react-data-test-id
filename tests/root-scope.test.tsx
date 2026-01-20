@@ -1,18 +1,14 @@
 import { render } from "@testing-library/react";
-import React, { useContext } from "react";
+import React from "react";
 import { describe, expect, it } from "vitest";
-import {
-  DataTestIdConfigurationContext,
-  DataTestIdRootScope,
-  DataTestIdScopeContext
-} from "../src";
+import { DataTestIdConfigurationContext, DataTestIdRootScope, useDataTestIdScope } from "../src";
 
 describe("DataTestIdRootScope", () => {
   it("Keeps the original value when no transformers are configured", () => {
     const values: Array<string> = [];
 
     const CaptureScope = () => {
-      values.push(useContext(DataTestIdScopeContext));
+      values.push(useDataTestIdScope());
       return null;
     };
 
@@ -38,7 +34,7 @@ describe("DataTestIdRootScope", () => {
     const values: Array<string> = [];
 
     const CaptureScope = () => {
-      values.push(useContext(DataTestIdScopeContext));
+      values.push(useDataTestIdScope());
       return null;
     };
 
