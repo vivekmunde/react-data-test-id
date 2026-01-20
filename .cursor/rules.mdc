@@ -6,6 +6,9 @@ globs: ["**/*"]
 ## Architecture & Code Quality
 - Use named exports only.
 - Export all intended public members at the end of each file.
+- Declare each React context in its own dedicated file.
+- Name React context values with a `Context` suffix (e.g., `DataTestIdConfigurationContext`).
+- Name context files with a `-context` suffix (e.g., `configuration-context.tsx`).
 
 ## Design Principles
 - Follow the Single Responsibility Principle.
@@ -20,12 +23,14 @@ globs: ["**/*"]
 - Maintain 100% test coverage.
 - Start every test case description with a capital letter.
 - Ensure each test case validates a single behavior.
+- Prefer importing from `src/index` in tests; use direct file imports only when necessary.
 
 ## Naming
 - Use dash-case for file names.
 - Prefix all type aliases with `T`.
 - Suffix all props types with `Props`.
 - Suffix all function argument types with `Args`.
+- Avoid `data-test-id` as a file name prefix.
 
 ## Components
 - Define and export a dedicated props type for every component, hook, and function.
