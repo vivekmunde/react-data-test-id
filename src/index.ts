@@ -1,3 +1,5 @@
+export { DataTestIdAttribute } from "./attribute";
+export type { TDataTestIdAttributeProps } from "./attribute";
 export { defaultConfiguration } from "./configuration";
 export type { TDataTestIdConfiguration } from "./configuration";
 export { DataTestIdConfigurationContext } from "./configuration-context";
