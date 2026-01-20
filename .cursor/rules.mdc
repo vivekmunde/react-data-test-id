@@ -7,8 +7,6 @@ globs: ["**/*"]
 - Use named exports only.
 - Export all intended public members at the end of each file.
 - Declare each React context in its own dedicated file.
-- Name React context values with a `Context` suffix (e.g., `DataTestIdConfigurationContext`).
-- Name context files with a `-context` suffix (e.g., `configuration-context.tsx`).
 
 ## Design Principles
 - Follow the Single Responsibility Principle.
@@ -27,10 +25,14 @@ globs: ["**/*"]
 
 ## Naming
 - Use dash-case for file names.
+- Avoid `data-test-id` as a file name prefix.
 - Prefix all type aliases with `T`.
 - Suffix all props types with `Props`.
 - Suffix all function argument types with `Args`.
-- Avoid `data-test-id` as a file name prefix.
+- Name context files with a `-context` suffix (e.g., `configuration-context.tsx`).
+- Name provider files with a `-provider` suffix (e.g., `configuration-provider.tsx`).
+- Name React context values with a `Context` suffix (e.g., `DataTestIdConfigurationContext`).
+- Name providers with a `Provider` suffix (e.g., `DataTestIdConfigurationProvider`).
 
 ## Components
 - Define and export a dedicated props type for every component, hook, and function.
