@@ -491,7 +491,7 @@ const EditProfilePage = () => {
     </div>
     <div>
       <button data-testid="edit-profile-form-submit-button">Submit</button>
-      <button data-testid="edit-profile-form-cancel-button">Submit</button>
+      <button data-testid="edit-profile-form-cancel-button">Cancel</button>
     </div>
   </form>
 </div>
@@ -532,7 +532,7 @@ const Form = (props) => {
     </div>
     <div>
       <button data-testid="form-submit-button">Submit</button>
-      <button data-testid="form-cancel-button">Submit</button>
+      <button data-testid="form-cancel-button">Cancel</button>
     </div>
   </form>
 </div>
