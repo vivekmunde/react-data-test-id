@@ -14,7 +14,11 @@ export type { TDataTestIdScopeProps } from "./scope";
 export { DataTestIdScopeContext } from "./scope-context";
 export type { TDataTestIdScopeValue } from "./scope-context";
 export { DataTestIdSwitch } from "./switch";
-export type { TDataTestIdSwitchOffProps, TDataTestIdSwitchOnProps } from "./switch";
+export type {
+  TDataTestIdSwitchOffProps,
+  TDataTestIdSwitchOnProps,
+  TDataTestIdSwitchProps
+} from "./switch";
 export { DataTestId } from "./test-id";
 export type { TDataTestIdProps } from "./test-id";
 export {

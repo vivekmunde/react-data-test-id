@@ -1,4 +1,5 @@
 import React, { type ReactElement } from "react";
+import { DataTestIdSwitch } from "./switch";
 import { useDataTestIdConfiguration } from "./use-configuration";
 import { useDataTestIdScope } from "./use-scope";
 
@@ -112,14 +113,22 @@ const DataTestIdAttributeSetter: React.FC<TDataTestIdAttributeProps> = ({ childr
 };
 
 /**
- * Applies the current scope value to the child using the configured attribute name.
+ * Applies the current scope value as a data test ID attribute, if `enabled` in configuration.
+ * The attribute value is read from the active scope in the hierarchy.
  *
  * @param children - Child element that receives the attribute.
  */
 const DataTestIdAttribute: React.FC<TDataTestIdAttributeProps> = ({ children }) => {
   useIsValidChild({ children });
 
-  return <DataTestIdAttributeSetter>{children}</DataTestIdAttributeSetter>;
+  return (
+    <DataTestIdSwitch>
+      <DataTestIdSwitch.Off>{children}</DataTestIdSwitch.Off>
+      <DataTestIdSwitch.On>
+        <DataTestIdAttributeSetter>{children}</DataTestIdAttributeSetter>
+      </DataTestIdSwitch.On>
+    </DataTestIdSwitch>
+  );
 };
 
 export { DataTestIdAttribute };

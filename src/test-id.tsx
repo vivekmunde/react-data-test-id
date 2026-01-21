@@ -1,7 +1,6 @@
 import React from "react";
 import { DataTestIdAttribute } from "./attribute";
 import { DataTestIdScope } from "./scope";
-import { DataTestIdSwitch } from "./switch";
 
 /**
  * Props for the DataTestId component.
@@ -18,21 +17,16 @@ type TDataTestIdProps = {
 };
 
 /**
- * Applies a scoped data test ID to children when enabled.
+ * Sets the scope segment in the hierarchy and applies the resulting data test ID to its child, if `enabled` in the configuration.
  *
  * @param value - Scope segment used to generate data test IDs.
  * @param children - Content wrapped by the data test ID scope.
  */
 const DataTestId: React.FC<TDataTestIdProps> = ({ value, children }) => {
   return (
-    <React.Fragment>
-      <DataTestIdSwitch.Off>{children}</DataTestIdSwitch.Off>
-      <DataTestIdSwitch.On>
-        <DataTestIdScope value={value}>
-          <DataTestIdAttribute>{children}</DataTestIdAttribute>
-        </DataTestIdScope>
-      </DataTestIdSwitch.On>
-    </React.Fragment>
+    <DataTestIdScope value={value}>
+      <DataTestIdAttribute>{children}</DataTestIdAttribute>
+    </DataTestIdScope>
   );
 };
 

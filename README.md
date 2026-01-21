@@ -701,7 +701,7 @@ const App = () => {
 
 ### DataTestIdRoot
 
-Starts/resets a root scope and applies the resulting ID to its child.
+Starts or resets the root scope in the hierarchy and applies the scope as data test ID attribute to its child, if `enabled` in configuration.
 
 ```tsx
 <DataTestIdRoot value="page">
@@ -759,7 +759,7 @@ Resets the scope chain. Use this when a subtree should start a new scope.
 
 ### DataTestId
 
-Appends a scope segment in the scope hierarchy and applies the resulting ID to its child.
+Sets the scope segment in the hierarchy and applies the resulting data test ID to its child, if `enabled` in the configuration.
 
 ```tsx
 <DataTestIdRootScope value="page">
@@ -1159,7 +1159,7 @@ The internal building blocks, components, and hooks are mostly used internally, 
 
 `DataTestIdAttribute` is usually used internally by `DataTestIdRoot` and `DataTestId`. Direct usage is only needed when applying the current scope to a single child element by hand.
 
-Applies the current scope to a single child element. Useful when a component already has a scope from its parent but needs to set the attribute explicitly.
+Applies the current scope value as a data test ID attribute, if `enabled` in the configuration. The value is read from the active scope in the hierarchy.
 
 ```tsx
 <DataTestIdScope value="search">
@@ -1173,6 +1173,36 @@ Applies the current scope to a single child element. Useful when a component alr
 
 ```html
 <input type="text" data-testid="search" />
+```
+
+#### DataTestIdSwitch
+
+`DataTestIdSwitch` selects either the `On` or `Off` branch from its immediate children based on the `enabled` flag in configuration. Both `DataTestIdSwitch.On` and `DataTestIdSwitch.Off` must be immediate children.
+
+```tsx
+import React from "react";
+import { DataTestIdConfiguration, DataTestIdSwitch } from "react-data-test-id";
+
+const ExampleComponent = () => {
+  return (
+    <DataTestIdConfiguration value={{ enabled: true }}>
+      <DataTestIdSwitch>
+        <DataTestIdSwitch.On>
+          <div>Enabled</div>
+        </DataTestIdSwitch.On>
+        <DataTestIdSwitch.Off>
+          <div>Disabled</div>
+        </DataTestIdSwitch.Off>
+      </DataTestIdSwitch>
+    </DataTestIdConfiguration>
+  );
+};
+```
+
+**Generated HTML:**
+
+```html
+<div>Enabled</div>
 ```
 
 ### Hooks
