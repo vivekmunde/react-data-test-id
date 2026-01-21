@@ -29,7 +29,8 @@
     "prepare": "husky install"
   },
   "peerDependencies": {
-    "react": ">=18"
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
     "@testing-library/react": "^14.2.1",
