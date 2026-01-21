@@ -1,9 +1,9 @@
 import { render } from "@testing-library/react";
 import React from "react";
 import { describe, expect, it } from "vitest";
-import { DataTestIdConfigurationProvider, useDataTestIdConfiguration } from "../src";
+import { DataTestIdConfiguration, useDataTestIdConfiguration } from "../src";
 
-describe("DataTestIdConfigurationProvider", () => {
+describe("DataTestIdConfiguration", () => {
   it("Provides default values when no overrides are supplied", () => {
     const values: Array<unknown> = [];
 
@@ -13,9 +13,9 @@ describe("DataTestIdConfigurationProvider", () => {
     };
 
     render(
-      <DataTestIdConfigurationProvider>
+      <DataTestIdConfiguration>
         <CaptureDefaults />
-      </DataTestIdConfigurationProvider>
+      </DataTestIdConfiguration>
     );
 
     expect(values[0]).toEqual({
@@ -35,9 +35,9 @@ describe("DataTestIdConfigurationProvider", () => {
     };
 
     render(
-      <DataTestIdConfigurationProvider value={{ enabled: false }}>
+      <DataTestIdConfiguration value={{ enabled: false }}>
         <CaptureEnabled />
-      </DataTestIdConfigurationProvider>
+      </DataTestIdConfiguration>
     );
 
     expect(values[0]).toEqual({
@@ -57,9 +57,9 @@ describe("DataTestIdConfigurationProvider", () => {
     };
 
     render(
-      <DataTestIdConfigurationProvider value={{ dataAttributeName: "data-x-path" }}>
+      <DataTestIdConfiguration value={{ dataAttributeName: "data-x-path" }}>
         <CaptureAttributeName />
-      </DataTestIdConfigurationProvider>
+      </DataTestIdConfiguration>
     );
 
     expect(values[0]).toEqual({
@@ -79,9 +79,9 @@ describe("DataTestIdConfigurationProvider", () => {
     };
 
     render(
-      <DataTestIdConfigurationProvider value={{ scopeSeparator: ":" }}>
+      <DataTestIdConfiguration value={{ scopeSeparator: ":" }}>
         <CaptureSeparator />
-      </DataTestIdConfigurationProvider>
+      </DataTestIdConfiguration>
     );
 
     expect(values[0]).toEqual({
@@ -102,9 +102,9 @@ describe("DataTestIdConfigurationProvider", () => {
     };
 
     render(
-      <DataTestIdConfigurationProvider value={{ scopeTrasnformers: [toUpper] }}>
+      <DataTestIdConfiguration value={{ scopeTrasnformers: [toUpper] }}>
         <CaptureTransformers />
-      </DataTestIdConfigurationProvider>
+      </DataTestIdConfiguration>
     );
 
     expect(values[0]).toEqual({

@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import React from "react";
 import { describe, expect, it } from "vitest";
-import { DataTestIdConfigurationProvider, useDataTestIdConfiguration } from "../src";
+import { DataTestIdConfiguration, useDataTestIdConfiguration } from "../src";
 
 describe("useDataTestIdConfiguration", () => {
   it("Returns the default configuration when no overrides are provided", () => {
@@ -13,9 +13,9 @@ describe("useDataTestIdConfiguration", () => {
     };
 
     render(
-      <DataTestIdConfigurationProvider>
+      <DataTestIdConfiguration>
         <CaptureConfiguration />
-      </DataTestIdConfigurationProvider>
+      </DataTestIdConfiguration>
     );
 
     expect(values[0]).toEqual({
@@ -35,7 +35,7 @@ describe("useDataTestIdConfiguration", () => {
     };
 
     render(
-      <DataTestIdConfigurationProvider
+      <DataTestIdConfiguration
         value={{
           enabled: false,
           dataAttributeName: "data-x-path",
@@ -43,7 +43,7 @@ describe("useDataTestIdConfiguration", () => {
         }}
       >
         <CaptureConfiguration />
-      </DataTestIdConfigurationProvider>
+      </DataTestIdConfiguration>
     );
 
     expect(values[0]).toEqual({

@@ -3,7 +3,7 @@ import React from "react";
 import { describe, expect, it } from "vitest";
 import {
   DataTestId,
-  DataTestIdConfigurationProvider,
+  DataTestIdConfiguration,
   DataTestIdRoot,
   DataTestIdRootScope,
   DataTestIdScope,
@@ -13,7 +13,7 @@ import {
 describe("Integration", () => {
   it("Builds scoped data test IDs from root and nested scope components", () => {
     const { container } = render(
-      <DataTestIdConfigurationProvider value={defaultConfiguration}>
+      <DataTestIdConfiguration value={defaultConfiguration}>
         <DataTestIdRoot value="app">
           <div>
             <DataTestIdScope value="form">
@@ -23,7 +23,7 @@ describe("Integration", () => {
             </DataTestIdScope>
           </div>
         </DataTestIdRoot>
-      </DataTestIdConfigurationProvider>
+      </DataTestIdConfiguration>
     );
 
     const root = container.querySelector("div");
@@ -34,7 +34,7 @@ describe("Integration", () => {
 
   it("Builds deep scoped ids across multiple nested scopes", () => {
     const { container } = render(
-      <DataTestIdConfigurationProvider value={defaultConfiguration}>
+      <DataTestIdConfiguration value={defaultConfiguration}>
         <DataTestIdRoot value="app">
           <section>
             <DataTestIdScope value="settings">
@@ -46,7 +46,7 @@ describe("Integration", () => {
             </DataTestIdScope>
           </section>
         </DataTestIdRoot>
-      </DataTestIdConfigurationProvider>
+      </DataTestIdConfiguration>
     );
 
     const button = container.querySelector("button");
@@ -55,7 +55,7 @@ describe("Integration", () => {
 
   it("Resets scope when a nested root scope is applied", () => {
     const { container } = render(
-      <DataTestIdConfigurationProvider value={defaultConfiguration}>
+      <DataTestIdConfiguration value={defaultConfiguration}>
         <DataTestIdRoot value="app">
           <div>
             <DataTestIdRootScope value="modal">
@@ -65,7 +65,7 @@ describe("Integration", () => {
             </DataTestIdRootScope>
           </div>
         </DataTestIdRoot>
-      </DataTestIdConfigurationProvider>
+      </DataTestIdConfiguration>
     );
 
     const button = container.querySelector("button");

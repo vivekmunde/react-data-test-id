@@ -3,9 +3,9 @@ import { defaultConfiguration, TDataTestIdConfiguration } from "./configuration"
 import { DataTestIdConfigurationContext } from "./configuration-context";
 
 /**
- * Props for the DataTestIdConfigurationProvider component.
+ * Props for the DataTestIdConfiguration component.
  */
-type TDataTestIdConfigurationProviderProps = {
+type TDataTestIdConfigurationProps = {
   /**
    * Partial configuration merged with defaults.
    */
@@ -22,10 +22,7 @@ type TDataTestIdConfigurationProviderProps = {
  * @param value - Partial configuration overrides applied on top of defaults.
  * @param children - Child nodes that consume the configuration context.
  */
-const DataTestIdConfigurationProvider: React.FC<TDataTestIdConfigurationProviderProps> = ({
-  value,
-  children
-}) => {
+const DataTestIdConfiguration: React.FC<TDataTestIdConfigurationProps> = ({ value, children }) => {
   /**
    * Merge the default configuration with the provided partial overrides.
    */
@@ -44,5 +41,5 @@ const DataTestIdConfigurationProvider: React.FC<TDataTestIdConfigurationProvider
   );
 };
 
-export { DataTestIdConfigurationProvider };
-export type { TDataTestIdConfigurationProviderProps };
+export { DataTestIdConfiguration };
+export type { TDataTestIdConfigurationProps };
