@@ -292,6 +292,8 @@ const ProfilePage = () => {
 </div>
 ```
 
+#### Resetting scope on purpose
+
 The scope can be reset at Details level when the parent scope hierarchy should not be included. Automation tools can still find the elements by using the parent IDs and then the children IDs.
 
 **\<Details />**
@@ -495,6 +497,8 @@ const EditProfilePage = () => {
 </div>
 ```
 
+#### Resetting scope on purpose
+
 The scope can be reset at Form level when the parent scope hierarchy should not be included. Automation tools can still find the elements by using the parent IDs and then the children IDs.
 
 **\<Form />**
@@ -674,9 +678,11 @@ const App = () => {
   return (
     <DataTestIdConfiguration value={{ scopeTrasnformers: [kebabCase] }}>
       <DataTestIdRoot value="User Profile">
-        <DataTestId value="Save Changes">
-          <button type="button">Save</button>
-        </DataTestId>
+        <div>
+          <DataTestId value="Save Changes">
+            <button type="button">Save</button>
+          </DataTestId>
+        </div>
       </DataTestIdRoot>
     </DataTestIdConfiguration>
   );
@@ -686,7 +692,9 @@ const App = () => {
 **Generated HTML:**
 
 ```html
-<button data-testid="user-profile-save-changes">Save</button>
+<div data-testid="user-profile">
+  <button data-testid="user-profile-save-changes">Save</button>
+</div>
 ```
 
 ## Components
@@ -1051,7 +1059,7 @@ const PageSearchSection = () => {
 </div>
 ```
 
-### Meaningful & short
+### Short but meaningful
 
 Use meaningful, context‑based names like `profile`, `age`, `email`, `save`, or `filters`.
 
