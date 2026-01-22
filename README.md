@@ -1,6 +1,8 @@
 # react-data-test-id
 
-A context-based utility for composing **predictable**, **readable** and **unique** **data-test-id**s in React apps for test automation.
+![npm](https://img.shields.io/npm/v/react-data-test-id?logo=npm) ![tests](https://img.shields.io/badge/tests-passing-brightgreen?logo=vitest) ![typecheck](https://img.shields.io/badge/typecheck-passing-brightgreen?logo=typescript) ![license](https://img.shields.io/npm/l/react-data-test-id?logo=open-source-initiative)
+
+A context-based utility for composing predictable, readable and unique data-test-ids in React apps for test automation.
 
 ## Why `data-test-ids` exist?
 
