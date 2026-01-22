@@ -123,6 +123,20 @@ Resulting unique & hierarchical IDs:
 </div>
 ```
 
+## Installation
+
+#### NPM
+
+```bash
+npm install --save react-data-test-id
+```
+
+#### Yarn
+
+```bash
+yarn add react-data-test-id
+```
+
 ## What is scope?
 
 A scope is the current path of segments in the component hierarchy. Each segment is a meaningful label like `page`, `section`, or `button`. The `data-testid` is the joined scope path.
@@ -151,20 +165,6 @@ A scope is the current path of segments in the component hierarchy. Each segment
   <select data-testid="dashboard-filters-gender" />
   <button data-testid="dashboard-filters-apply">Apply</button>
 </div>
-```
-
-## Installation
-
-#### NPM
-
-```bash
-npm install --save react-data-test-id
-```
-
-#### Yarn
-
-```bash
-yarn add react-data-test-id
 ```
 
 ## Usage
