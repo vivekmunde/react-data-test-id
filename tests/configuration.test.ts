@@ -15,7 +15,7 @@ describe("Configuration defaults", () => {
   });
 
   it("Initializes scope transformers as an empty array", () => {
-    expect(Array.isArray(defaultConfiguration.scopeTrasnformers)).toBe(true);
-    expect(defaultConfiguration.scopeTrasnformers).toHaveLength(0);
+    expect(Array.isArray(defaultConfiguration.scopeTransformers)).toBe(true);
+    expect(defaultConfiguration.scopeTransformers).toHaveLength(0);
   });
 });

@@ -7,18 +7,18 @@ import { useDataTestIdConfiguration } from "./use-configuration";
  * @param value - Raw input value to transform.
  */
 const useTransformers = (value: string): string => {
-  const { scopeTrasnformers } = useDataTestIdConfiguration();
+  const { scopeTransformers } = useDataTestIdConfiguration();
 
   const transformedValue = useMemo(() => {
-    if (!scopeTrasnformers || scopeTrasnformers.length === 0) {
+    if (!scopeTransformers || scopeTransformers.length === 0) {
       return value;
     }
 
-    return scopeTrasnformers.reduce(
+    return scopeTransformers.reduce(
       (currentValue, transformer) => transformer(currentValue),
       value
     );
-  }, [scopeTrasnformers, value]);
+  }, [scopeTransformers, value]);
 
   return transformedValue;
 };

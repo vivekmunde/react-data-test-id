@@ -23,7 +23,7 @@ describe("DataTestIdScope", () => {
           enabled: true,
           dataAttributeName: "data-testid",
           scopeSeparator: "-",
-          scopeTrasnformers: []
+          scopeTransformers: []
         }}
       >
         <DataTestIdScope value="child">
@@ -49,7 +49,7 @@ describe("DataTestIdScope", () => {
           enabled: true,
           dataAttributeName: "data-testid",
           scopeSeparator: ":",
-          scopeTrasnformers: []
+          scopeTransformers: []
         }}
       >
         <DataTestIdScopeContext.Provider value="parent">

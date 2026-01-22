@@ -22,7 +22,7 @@ describe("DataTestIdConfiguration", () => {
       enabled: true,
       dataAttributeName: "data-testid",
       scopeSeparator: "-",
-      scopeTrasnformers: []
+      scopeTransformers: []
     });
   });
 
@@ -44,7 +44,7 @@ describe("DataTestIdConfiguration", () => {
       enabled: false,
       dataAttributeName: "data-testid",
       scopeSeparator: "-",
-      scopeTrasnformers: []
+      scopeTransformers: []
     });
   });
 
@@ -66,7 +66,7 @@ describe("DataTestIdConfiguration", () => {
       enabled: true,
       dataAttributeName: "data-x-path",
       scopeSeparator: "-",
-      scopeTrasnformers: []
+      scopeTransformers: []
     });
   });
 
@@ -88,11 +88,11 @@ describe("DataTestIdConfiguration", () => {
       enabled: true,
       dataAttributeName: "data-testid",
       scopeSeparator: ":",
-      scopeTrasnformers: []
+      scopeTransformers: []
     });
   });
 
-  it("Uses the provided scopeTrasnformers override", () => {
+  it("Uses the provided scopeTransformers override", () => {
     const values: Array<unknown> = [];
     const toUpper = (value: string) => value.toUpperCase();
 
@@ -102,7 +102,7 @@ describe("DataTestIdConfiguration", () => {
     };
 
     render(
-      <DataTestIdConfiguration value={{ scopeTrasnformers: [toUpper] }}>
+      <DataTestIdConfiguration value={{ scopeTransformers: [toUpper] }}>
         <CaptureTransformers />
       </DataTestIdConfiguration>
     );
@@ -111,7 +111,7 @@ describe("DataTestIdConfiguration", () => {
       enabled: true,
       dataAttributeName: "data-testid",
       scopeSeparator: "-",
-      scopeTrasnformers: [toUpper]
+      scopeTransformers: [toUpper]
     });
   });
 });

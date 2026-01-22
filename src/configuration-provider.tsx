@@ -31,7 +31,7 @@ const DataTestIdConfiguration: React.FC<TDataTestIdConfigurationProps> = ({ valu
       ...defaultConfiguration,
       ...value
     }),
-    [value?.dataAttributeName, value?.enabled, value?.scopeSeparator, value?.scopeTrasnformers]
+    [value?.dataAttributeName, value?.enabled, value?.scopeSeparator, value?.scopeTransformers]
   );
 
   return (

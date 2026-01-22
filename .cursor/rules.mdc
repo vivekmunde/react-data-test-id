@@ -18,12 +18,14 @@ globs: ["**/*"]
 - Add IDE IntelliSense-friendly comments and descriptions for every component, hook, and function.
 - Document every member of a type, props object, or argument object with a clear comment.
 - Add a clear comment for every function argument.
+- Always verify spelling in identifiers, comments, docs, and tests.
 
 ## README.md Documentation
 - Keep documentation developer-friendly and focused on practical usage.
 - Use simple, clear English that is easy to understand.
 - Provide code examples where they improve understanding.
 - Prefer realistic, production-like examples.
+- Always verify spelling in README content, headings, and code samples.
 - Avoid adding line breaks only for formatting; rely on project formatting settings.
 - Avoid using the word "you"; use neutral, descriptive phrasing instead.
 - `DataTestIdRoot`, `DataTestId` & `DataTestIdAttribute` examples must wrap a single valid React element excluding `DataTestIdRoot`, `DataTestId`, `DataTestIdAttribute`, `DataTestIdRootScope`, `DataTestIdScope`.

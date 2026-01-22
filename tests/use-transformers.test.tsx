@@ -18,7 +18,7 @@ describe("useTransformers", () => {
           enabled: true,
           dataAttributeName: "data-testid",
           scopeSeparator: "-",
-          scopeTrasnformers: []
+          scopeTransformers: []
         }}
       >
         <CaptureValue />
@@ -44,7 +44,7 @@ describe("useTransformers", () => {
           enabled: true,
           dataAttributeName: "data-testid",
           scopeSeparator: "-",
-          scopeTrasnformers: [toUpper, replaceSpaces]
+          scopeTransformers: [toUpper, replaceSpaces]
         }}
       >
         <CaptureValue />

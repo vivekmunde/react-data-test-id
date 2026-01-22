@@ -22,7 +22,7 @@ describe("useDataTestIdConfiguration", () => {
       enabled: true,
       dataAttributeName: "data-testid",
       scopeSeparator: "-",
-      scopeTrasnformers: []
+      scopeTransformers: []
     });
   });
 
@@ -50,7 +50,7 @@ describe("useDataTestIdConfiguration", () => {
       enabled: false,
       dataAttributeName: "data-x-path",
       scopeSeparator: ":",
-      scopeTrasnformers: []
+      scopeTransformers: []
     });
   });
 });

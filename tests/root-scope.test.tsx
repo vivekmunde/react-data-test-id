@@ -18,7 +18,7 @@ describe("DataTestIdRootScope", () => {
           enabled: true,
           dataAttributeName: "data-testid",
           scopeSeparator: "-",
-          scopeTrasnformers: []
+          scopeTransformers: []
         }}
       >
         <DataTestIdRootScope value="root">
@@ -44,7 +44,7 @@ describe("DataTestIdRootScope", () => {
           enabled: true,
           dataAttributeName: "data-testid",
           scopeSeparator: "-",
-          scopeTrasnformers: [(value) => value.toUpperCase()]
+          scopeTransformers: [(value) => value.toUpperCase()]
         }}
       >
         <DataTestIdRootScope value="root">

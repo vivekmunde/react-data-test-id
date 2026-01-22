@@ -555,7 +555,7 @@ const App = () => {
         enabled: true,
         dataAttributeName: "data-testid",
         scopeSeparator: "-",
-        scopeTrasnformers: []
+        scopeTransformers: []
       }}
     >
       {/* app */}
@@ -571,7 +571,7 @@ const App = () => {
 | `enabled`           | `boolean`                          | `true`          | Enables or disables test ID output.                  | `{ enabled: false }`                                    |
 | `dataAttributeName` | `string`                           | `"data-testid"` | Attribute name applied to elements.                  | `{ dataAttributeName: "data-qa" }`                      |
 | `scopeSeparator`    | `string`                           | `"-"`           | Separator used to join scope segments.               | `{ scopeSeparator: ":" }`                               |
-| `scopeTrasnformers` | `Array<(value: string) => string>` | `[]`            | Transformers applied to each segment before joining. | `{ scopeTrasnformers: [value => value.toUpperCase()] }` |
+| `scopeTransformers` | `Array<(value: string) => string>` | `[]`            | Transformers applied to each segment before joining. | `{ scopeTransformers: [value => value.toUpperCase()] }` |
 
 #### Production
 
@@ -634,7 +634,7 @@ const App = () => {
   return (
     <DataTestIdConfiguration
       value={{
-        scopeTrasnformers: [
+        scopeTransformers: [
           convertToLowerCase,
           replaceSpaceWith("-"),
           replaceWith(/[^a-z0-9-]/gi, "")
@@ -678,7 +678,7 @@ const kebabCase = (value: string) =>
 
 const App = () => {
   return (
-    <DataTestIdConfiguration value={{ scopeTrasnformers: [kebabCase] }}>
+    <DataTestIdConfiguration value={{ scopeTransformers: [kebabCase] }}>
       <DataTestIdRoot value="User Profile">
         <div>
           <DataTestId value="Save Changes">

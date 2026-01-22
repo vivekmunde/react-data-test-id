@@ -18,7 +18,7 @@ describe("useJoinScopes", () => {
           enabled: true,
           dataAttributeName: "data-testid",
           scopeSeparator: "-",
-          scopeTrasnformers: []
+          scopeTransformers: []
         }}
       >
         <CaptureScope />
@@ -42,7 +42,7 @@ describe("useJoinScopes", () => {
           enabled: true,
           dataAttributeName: "data-testid",
           scopeSeparator: ":",
-          scopeTrasnformers: []
+          scopeTransformers: []
         }}
       >
         <CaptureScope />
@@ -66,7 +66,7 @@ describe("useJoinScopes", () => {
           enabled: true,
           dataAttributeName: "data-testid",
           scopeSeparator: ":",
-          scopeTrasnformers: []
+          scopeTransformers: []
         }}
       >
         <CaptureScope />

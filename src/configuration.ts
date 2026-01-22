@@ -17,7 +17,7 @@ type TDataTestIdConfiguration = {
   /**
    * Optional list of transformers applied to each segment.
    */
-  scopeTrasnformers?: ((value: string) => string)[];
+  scopeTransformers?: ((value: string) => string)[];
 };
 
 /**
@@ -27,7 +27,7 @@ const defaultConfiguration: TDataTestIdConfiguration = {
   enabled: true,
   dataAttributeName: "data-testid",
   scopeSeparator: "-",
-  scopeTrasnformers: []
+  scopeTransformers: []
 };
 
 export { defaultConfiguration };
