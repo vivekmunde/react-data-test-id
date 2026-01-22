@@ -11,7 +11,7 @@ type TDataTestIdRootScopeProps = {
    */
   value: string;
   /**
-   * Child nodes that consume the root scope.
+   * Children to be rendered.
    */
   children: React.ReactNode;
 };
@@ -20,7 +20,7 @@ type TDataTestIdRootScopeProps = {
  * Provides a root scope value that is transformed by configured transformers.
  *
  * @param value - Root scope value before transformations.
- * @param children - Child nodes rendered within the root scope.
+ * @param children - Children to be rendered.
  */
 const DataTestIdRootScope: React.FC<TDataTestIdRootScopeProps> = ({ value, children }) => {
   const currentScope = useTransformers(value);

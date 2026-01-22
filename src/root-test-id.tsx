@@ -11,7 +11,7 @@ type TDataTestIdRootProps = {
    */
   value: string;
   /**
-   * Content wrapped by the root scope behavior.
+   * Children to be rendered.
    */
   children: React.ReactNode;
 };
@@ -20,7 +20,7 @@ type TDataTestIdRootProps = {
  * Starts or resets the root scope in the hierarchy and applies the scope as data test ID attribute to its child, if `enabled` in configuration.
  *
  * @param value - Root scope value used to generate data test IDs.
- * @param children - Content wrapped by the root scope.
+ * @param children - Children to be rendered.
  */
 const DataTestIdRoot: React.FC<TDataTestIdRootProps> = ({ value, children }) => {
   return (

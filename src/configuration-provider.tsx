@@ -11,7 +11,7 @@ type TDataTestIdConfigurationProps = {
    */
   value?: Partial<TDataTestIdConfiguration>;
   /**
-   * Child nodes that consume the configuration context.
+   * Children to be rendered.
    */
   children: React.ReactNode;
 };
@@ -20,7 +20,7 @@ type TDataTestIdConfigurationProps = {
  * Provides DataTestId configuration by merging defaults with the supplied partial value.
  *
  * @param value - Partial configuration overrides applied on top of defaults.
- * @param children - Child nodes that consume the configuration context.
+ * @param children - Children to be rendered.
  */
 const DataTestIdConfiguration: React.FC<TDataTestIdConfigurationProps> = ({ value, children }) => {
   /**

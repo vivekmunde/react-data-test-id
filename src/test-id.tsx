@@ -11,7 +11,7 @@ type TDataTestIdProps = {
    */
   value: string;
   /**
-   * Content wrapped by the data test ID behavior.
+   * Children to be rendered.
    */
   children: React.ReactNode;
 };
@@ -20,7 +20,7 @@ type TDataTestIdProps = {
  * Sets the scope segment in the hierarchy and applies the resulting data test ID to its child, if `enabled` in the configuration.
  *
  * @param value - Scope segment used to generate data test IDs.
- * @param children - Content wrapped by the data test ID scope.
+ * @param children - Children to be rendered.
  */
 const DataTestId: React.FC<TDataTestIdProps> = ({ value, children }) => {
   return (

@@ -13,16 +13,16 @@ type TDataTestIdScopeProps = {
    */
   value: string;
   /**
-   * Child nodes rendered within the derived scope.
+   * Children to be rendered.
    */
   children: React.ReactNode;
 };
 
 /**
- * Extends the current scope with a transformed segment and provides it to children.
+ * Adds a scope segment in the hierarchy without applying an attribute, useful for layout boundaries.
  *
- * @param value - Scope segment to append.
- * @param children - Child nodes rendered within the derived scope.
+ * @param value - Scope segment to add in the hierarchy.
+ * @param children - Children to be rendered.
  */
 const DataTestIdScope: React.FC<TDataTestIdScopeProps> = ({ value, children }) => {
   const parentScope = useDataTestIdScope();

@@ -6,7 +6,7 @@ import { useDataTestIdConfiguration } from "./use-configuration";
  */
 type TDataTestIdSwitchOnProps = {
   /**
-   * Content rendered only when the configuration is enabled.
+   * Children to be rendered.
    */
   children: React.ReactNode;
 };
@@ -16,7 +16,7 @@ type TDataTestIdSwitchOnProps = {
  */
 type TDataTestIdSwitchOffProps = {
   /**
-   * Content rendered only when the configuration is disabled.
+   * Children to be rendered.
    */
   children: React.ReactNode;
 };
@@ -26,17 +26,7 @@ type TDataTestIdSwitchOffProps = {
  */
 type TDataTestIdSwitchProps = {
   /**
-   * Immediate children of the switch (On/Off branches).
-   */
-  children: React.ReactNode;
-};
-
-/**
- * Arguments for resolving switch branches.
- */
-type TResolveSwitchBranchesArgs = {
-  /**
-   * Children provided to the switch.
+   * Children to be rendered.
    */
   children: React.ReactNode;
 };
@@ -44,7 +34,7 @@ type TResolveSwitchBranchesArgs = {
 /**
  * Renders children for the On branch.
  *
- * @param children - Content rendered only when enabled.
+ * @param children - Children to be rendered.
  */
 const DataTestIdSwitchOn: React.FC<TDataTestIdSwitchOnProps> = ({ children }) => {
   return children;
@@ -55,7 +45,7 @@ DataTestIdSwitchOn.displayName = "DataTestIdSwitch.On";
 /**
  * Renders children for the Off branch.
  *
- * @param children - Content rendered only when disabled.
+ * @param children - Children to be rendered.
  */
 const DataTestIdSwitchOff: React.FC<TDataTestIdSwitchOffProps> = ({ children }) => {
   return children;
@@ -66,7 +56,7 @@ DataTestIdSwitchOff.displayName = "DataTestIdSwitch.Off";
 /**
  * Switches between On and Off branches based on configuration.
  *
- * @param children - Immediate children of the switch.
+ * @param children - Children to be rendered.
  */
 const DataTestIdSwitch: React.FC<TDataTestIdSwitchProps> & {
   On: React.FC<TDataTestIdSwitchOnProps>;
