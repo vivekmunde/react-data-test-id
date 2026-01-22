@@ -2,6 +2,14 @@
   "name": "react-data-test-id",
   "version": "0.1.0",
   "description": "A context-based utility for composing predictable & unique test IDs in React apps for test automation.",
+  "keywords": [
+    "react",
+    "testing",
+    "data-testid",
+    "test-id",
+    "automation",
+    "qa"
+  ],
   "license": "MIT",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
