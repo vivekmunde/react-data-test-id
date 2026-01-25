@@ -2,6 +2,14 @@
   "name": "react-data-test-id",
   "version": "1.0.0",
   "description": "A context-based utility for composing predictable & unique test IDs in React apps for test automation.",
+  "homepage": "https://github.com/vivekmunde/react-data-test-id",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vivekmunde/react-data-test-id.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vivekmunde/react-data-test-id/issues"
+  },
   "keywords": [
     "react",
     "testing",
