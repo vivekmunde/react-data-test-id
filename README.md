@@ -167,7 +167,95 @@ A scope is the current path of segments in the component hierarchy. Each segment
 </div>
 ```
 
-## Usage
+## Scope hierarchy & test Ids generation
+
+Scope hierarchy is built from the `value` passed to each `DataTestIdRoot`, `DataTestIdScope`, and `DataTestId`.
+Each segment is appended in order, and the final `data-testid` is the joined path at every scope level in the hierarchy.
+
+Each scope level represents the full path from the root to that node, not just the last segment.
+This keeps the resulting `data-testid` values stable, predictable, and unique across the component tree.
+
+Key rules used to generate test IDs:
+
+- `DataTestIdRoot` establishes the first segment for the hierarchy.
+- `DataTestIdScope` appends a segment for descendants without applying an attribute.
+- `DataTestId` appends a segment and applies the attribute using the enabled configuration.
+- Empty or undefined segment values are ignored when joining the path.
+- The `scopeSeparator` and `scopeTransformers` configuration are applied before the final attribute is set.
+
+### Flow chart
+
+```
+------------------------------------------------------------------------------------
+Component & scope hierarchy                   Generated test IDs
+------------------------------------------------------------------------------------
+DataTestIdRoot("app")                         → "app"
+├─ DataTestId("profile")                      → "app-profile"
+│  └─ DataTestId("details")                   → "app-profile-details"
+│     ├─ DataTestId("name")                   → "app-profile-details-name"
+│     │  ├─ DataTestId("label")               → "app-profile-details-name-label"
+│     │  └─ DataTestId("value")               → "app-profile-details-name-value"
+│     └─ DataTestId("email")                  → "app-profile-details-email"
+│        ├─ DataTestId("label")               → "app-profile-details-email-label"
+│        └─ DataTestId("value")               → "app-profile-details-email-value"
+└─ DataTestId("settings")                     → "app-settings"
+   └─ DataTestId("details")                   → "app-settings-details"
+      ├─ DataTestId("language")               → "app-settings-details-language"
+      │  ├─ DataTestId("label")               → "app-settings-details-language-label"
+      │  └─ DataTestId("value")               → "app-settings-details-language-value"
+      └─ DataTestId("theme")                  → "app-settings-details-theme"
+         ├─ DataTestId("label")               → "app-settings-details-theme-label"
+         └─ DataTestId("value")               → "app-settings-details-theme-value"
+------------------------------------------------------------------------------------
+DataTestIdRoot("app")                         → "app"
+├─ DataTestId("profile")                      → "app-profile"
+│  └─ DataTestId("form")                      → "app-profile-form"
+│     ├─ DataTestId("name")                   → "app-profile-form-name"
+│     │  ├─ DataTestId("input")               → "app-profile-form-name-input"
+│     │  └─ DataTestId("help")                → "app-profile-form-name-help"
+│     ├─ DataTestId("email")                  → "app-profile-form-email"
+│     │  ├─ DataTestId("input")               → "app-profile-form-email-input"
+│     │  └─ DataTestId("help")                → "app-profile-form-email-help"
+│     ├─ DataTestId("save")                   → "app-profile-form-save"
+│     └─ DataTestId("cancel")                 → "app-profile-form-cancel"
+└─ DataTestId("settings")                     → "app-settings"
+   └─ DataTestId("form")                      → "app-settings-form"
+      ├─ DataTestId("language")               → "app-settings-form-language"
+      │  ├─ DataTestId("input")               → "app-settings-form-language-input"
+      │  └─ DataTestId("help")                → "app-settings-form-language-help"
+      ├─ DataTestId("theme")                  → "app-settings-form-theme"
+      │  ├─ DataTestId("input")               → "app-settings-form-theme-input"
+      │  └─ DataTestId("help")                → "app-settings-form-theme-help"
+      ├─ DataTestId("save")                   → "app-settings-form-save"
+      ├─ DataTestId("cancel")                 → "app-settings-form-cancel"
+      └─ DataTestId("reset")                  → "app-settings-form-reset"
+```
+
+Same components used in different scopes generate predictable, unique test IDs:
+
+```
+- Details under "profile"  → "app-profile-details"
+- Details under "settings" → "app-settings-details"
+
+- Label under "profile -> name"  → "app-profile-details-name-label"
+- Value under "settings -> name" → "app-settings-details-name-value"
+
+- Label under "profile -> email"  → "app-profile-details-email-label"
+- Value under "settings -> email" → "app-settings-details-email-value"
+```
+
+```
+- Form under "profile"  → "app-profile-form"
+- Form under "settings" → "app-settings-form"
+
+- SaveButton under "profile"  → "app-profile-form-save"
+- SaveButton under "settings" → "app-settings-form-save"
+
+- CancelButton under "profile"  → "app-profile-form-cancel"
+- CancelButton under "settings" → "app-settings-form-cancel"
+```
+
+## Usage Examples
 
 ### Page
 
