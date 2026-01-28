@@ -55,7 +55,8 @@ const Button = (props) => {
     <FormFieldLabel data-testid="profile-form-email-label">Email</FormFieldLabel>
     <FormFieldInput data-testid="profile-form-email-input" type="text" />
   </FormField>
-  <Button data-testid="profile-form-save-button">Save</Button>
+  <Button data-testid="profile-form-submit-button">Save</Button>
+  <Button data-testid="profile-form-cancel-button">Cancel</Button>
 </Form>;
 ```
 
@@ -98,20 +99,32 @@ const DetailsItemValue = (props) => {
   );
 };
 
+const DetailsItem = ({ name, ...props }) => {
+  return (
+    <DataTestId value={name}>
+      <div {...props} />
+    </DataTestId>
+  );
+};
+
+const Details = (props) => {
+  return (
+    <DataTestId value="details">
+      <div {...props} />
+    </DataTestId>
+  );
+};
+
 <DataTestIdRoot value="profile">
   <Details>
-    <DataTestId value="name">
+    <DetailsItem name="name">
       <DetailsItemLabel>Name</DetailsItemLabel>
-    </DataTestId>
-    <DataTestId value="name">
       <DetailsItemValue>John</DetailsItemValue>
-    </DataTestId>
-    <DataTestId value="email">
+    </DetailsItem>
+    <DetailsItem name="email">
       <DetailsItemLabel>Email</DetailsItemLabel>
-    </DataTestId>
-    <DataTestId value="email">
       <DetailsItemValue>john@example.com</DetailsItemValue>
-    </DataTestId>
+    </DetailsItem>
   </Details>
 </DataTestIdRoot>;
 ```
@@ -120,10 +133,14 @@ const DetailsItemValue = (props) => {
 
 ```html
 <div data-testid="profile-details">
-  <label data-testid="profile-details-name-label">Name</label>
-  <span data-testid="profile-details-name-value">John</span>
-  <label data-testid="profile-details-email-label">Email</label>
-  <span data-testid="profile-details-email-value">john@example.com</span>
+  <div data-testid="profile-details-name">
+    <label data-testid="profile-details-name-label">Name</label>
+    <span data-testid="profile-details-name-value">John</span>
+  </div>
+  <div data-testid="profile-details-email">
+    <label data-testid="profile-details-email-label">Email</label>
+    <span data-testid="profile-details-email-value">john@example.com</span>
+  </div>
 </div>
 ```
 
@@ -146,27 +163,54 @@ const FormFieldInput = (props) => {
   );
 };
 
-const FormSubmitButton = (props) => {
+const FormField = ({ name, ...props }) => {
   return (
-    <DataTestId value="submit">
+    <DataTestId value={name}>
+      <div {...props} />
+    </DataTestId>
+  );
+};
+
+const Form = (props) => {
+  return (
+    <DataTestId value="form">
+      <form {...props} />
+    </DataTestId>
+  );
+};
+
+const Button = (props) => {
+  return (
+    <DataTestId value="button">
       <button type="button" {...props} />
     </DataTestId>
   );
 };
 
+const FormSubmitButton = (props) => {
+  return (
+    <DataTestIdScope value="submit">
+      <Button type="submit" {...props} />
+    </DataTestIdScope>
+  );
+};
+
+const FormCancelButton = (props) => {
+  return (
+    <DataTestIdScope value="cancel">
+      <Button type="button" {...props} />
+    </DataTestIdScope>
+  );
+};
+
 <DataTestIdRoot value="profile">
   <Form>
-    <DataTestIdScope value="form">
-      <DataTestId value="email">
-        <FormFieldLabel>Email</FormFieldLabel>
-      </DataTestId>
-      <DataTestId value="email">
-        <FormFieldInput type="text" />
-      </DataTestId>
-      <DataTestId value="save">
-        <FormSubmitButton>Save</FormSubmitButton>
-      </DataTestId>
-    </DataTestIdScope>
+    <FormField name="email">
+      <FormFieldLabel>Email</FormFieldLabel>
+      <FormFieldInput type="text" />
+    </FormField>
+    <FormSubmitButton>Save</FormSubmitButton>
+    <FormCancelButton>Cancel</FormCancelButton>
   </Form>
 </DataTestIdRoot>;
 ```
@@ -175,13 +219,16 @@ const FormSubmitButton = (props) => {
 
 ```html
 <form data-testid="profile-form">
-  <label data-testid="profile-form-email-label">Email</label>
-  <input data-testid="profile-form-email-input" />
-  <button data-testid="profile-form-save">Save</button>
+  <div data-testid="profile-form-email">
+    <label data-testid="profile-form-email-label">Email</label>
+    <input data-testid="profile-form-email-input" />
+  </div>
+  <button data-testid="profile-form-submit-button">Save</button>
+  <button data-testid="profile-form-cancel-button">cancel</button>
 </form>
 ```
 
-How this approach resolves the earlier issues:
+**How this approach resolves the earlier issues:**
 
 - Uniqueness and collisions: each element receives the full scope path, so repeated components stay unique across branches and lists.
 - Maintainability: IDs are composed from short, readable segments instead of long manual strings.
