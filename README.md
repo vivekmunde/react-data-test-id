@@ -6,65 +6,196 @@ A context-based utility for composing predictable, readable, and unique `data-te
 
 ## Why `data-test-ids` exist
 
-Data attributes such as `data-testid` provide stable selectors for automation testing. They are resilient to DOM structure changes, avoid brittle class name or layout selectors, and keep tests focused on user-visible intent. As UI codebases evolve, markup and styling can change without altering behavior. Test ID attributes give teams a durable contract for automation tooling like Playwright and Cypress.
+Data attributes such as `data-testid` provide stable selectors for automation testing. They are resilient to DOM structure changes, avoid brittle class name or layout selectors, and keep tests focused on user‑visible intent. As UI codebases evolve, markup and styling can change without altering behavior. Test ID attributes give teams a durable contract for automation tooling like Playwright and Cypress.
+
+Test IDs are a key layer in automation because they decouple tests from visual structure and styling. They communicate intent directly, making selectors readable and predictable across refactors. This reduces maintenance cost as components change or move within the UI.
 
 Test IDs are most effective when they are consistent and scoped to the part of the UI where a component lives. This library uses React context to build that scope automatically so each component declares only its own segment instead of manually concatenating strings.
 
-## What the context-based approach solves
+## Issues of data-test-ids
 
-- Eliminates hard-coded, scattered test IDs across the codebase.
-- Avoids collisions when the same component appears in different parts of the UI.
-- Keeps IDs stable as components move within the same scope hierarchy.
-- Keeps test IDs unique within the scope hierarchy.
-- Keeps test IDs predictable and consistent.
+Manual test IDs work for small screens, but they break down as component trees grow. The examples below show how quickly IDs become verbose and tightly tied to structure, even in simple details and form views.
 
-Non-context test IDs are hard to maintain, as shown below:
+**Example of manual IDs for data display:**
 
 ```tsx
-<button data-testid="settings-profile-save-button">Save</button>
+const DetailsItemLabel = (props) => {
+  return <label {...props} />;
+};
+
+const DetailsItemValue = (props) => {
+  return <span {...props} />;
+};
+
+<Details>
+  <DetailsItemLabel data-testid="profile-details-name-label">Name</DetailsItemLabel>
+  <DetailsItemValue data-testid="profile-details-name-value">John</DetailsItemValue>
+  <DetailsItemLabel data-testid="profile-details-email-label">Email</DetailsItemLabel>
+  <DetailsItemValue data-testid="profile-details-email-value">john@example.com</DetailsItemValue>
+</Details>;
 ```
 
-Context-based test IDs are composable, stable, and unique within a module:
+**Example of manual IDs for a form:**
 
 ```tsx
-<DataTestIdRoot value="auth">
-  <div>
-    <DataTestIdScope value="verify">
-      <DataTestId value="email">
-        <input type="text" />
-      </DataTestId>
-      <DataTestId value="submit">
-        <button type="button">Login</button>
-      </DataTestId>
-    </DataTestIdScope>
-  </div>
-</DataTestIdRoot>
+const FormFieldLabel = (props) => {
+  return <label {...props} />;
+};
+
+const FormFieldInput = (props) => {
+  return <input {...props} />;
+};
+
+const Button = (props) => {
+  return <button type="button" {...props} />;
+};
+
+<Form>
+  <FormField>
+    <FormFieldLabel data-testid="profile-form-email-label">Email</FormFieldLabel>
+    <FormFieldInput data-testid="profile-form-email-input" type="text" />
+  </FormField>
+  <Button data-testid="profile-form-save-button">Save</Button>
+</Form>;
+```
+
+In both examples, the IDs encode the full path (`profile-details-name-label`, `profile-form-email-input`). This creates a set of recurring pain points:
+
+- Uniqueness: the same `DetailsItemLabel` or `FormFieldInput` used in another section needs a different prefix to stay unique.
+- Collisions: identical manual prefixes across sections make selectors ambiguous or point to the wrong element.
+- Maintainability: long strings grow with every new layer and become difficult to audit.
+- Reusability: reusable components carry page‑specific IDs, so each usage needs a manual rewrite.
+- Tight coupling: selectors mirror layout and hierarchy, so structural changes ripple through tests.
+- Inconsistency: different teams form different naming patterns for similar UI, creating drift.
+- Non‑meaningful values: manual names reflect structure more than intent, making selectors harder to read.
+- Developer experience: debugging failed selectors becomes slower as ID complexity grows.
+- More: renaming a parent segment can break unrelated tests that depend on the same prefix.
+
+These issues make test suites fragile and increase ongoing maintenance cost. Small UI changes in development can break test suites in production.
+
+A context based approach addresses these problems by composing IDs from scope segments, and it is covered in the next section.
+
+## Context-based approach
+
+`DataTestIdRoot` establishes a root scope. Each `DataTestId` adds one segment to the hierarchy and applies the joined scope to its child element.
+
+**Context-based example for data display:**
+
+```tsx
+const DetailsItemLabel = (props) => {
+  return (
+    <DataTestId value="label">
+      <label {...props} />
+    </DataTestId>
+  );
+};
+
+const DetailsItemValue = (props) => {
+  return (
+    <DataTestId value="value">
+      <span {...props} />
+    </DataTestId>
+  );
+};
+
+<DataTestIdRoot value="profile">
+  <Details>
+    <DataTestId value="name">
+      <DetailsItemLabel>Name</DetailsItemLabel>
+    </DataTestId>
+    <DataTestId value="name">
+      <DetailsItemValue>John</DetailsItemValue>
+    </DataTestId>
+    <DataTestId value="email">
+      <DetailsItemLabel>Email</DetailsItemLabel>
+    </DataTestId>
+    <DataTestId value="email">
+      <DetailsItemValue>john@example.com</DetailsItemValue>
+    </DataTestId>
+  </Details>
+</DataTestIdRoot>;
 ```
 
 **Generated HTML:**
 
 ```html
-<div data-testid="auth-verify">
-  <input data-testid="auth-verify-email" />
-  <button data-testid="auth-verify-submit">Login</button>
+<div data-testid="profile-details">
+  <label data-testid="profile-details-name-label">Name</label>
+  <span data-testid="profile-details-name-value">John</span>
+  <label data-testid="profile-details-email-label">Email</label>
+  <span data-testid="profile-details-email-value">john@example.com</span>
 </div>
 ```
 
-## Context-based approach
+**Context-based example for a form:**
 
-`DataTestIdRoot` establishes a root scope. Each `DataTestId` adds one segment to the hierarchy and applies the joined scope to its child element. This creates:
+```tsx
+const FormFieldLabel = (props) => {
+  return (
+    <DataTestId value="label">
+      <label {...props} />
+    </DataTestId>
+  );
+};
 
-- Unique per context IDs because nested scopes inherit and extend the parent scope.
-- Composable scopes because layout boundaries can define scope without touching leaf components.
-- Stability because only meaningful structural changes alter the resulting IDs.
-- Effortless uniqueness because the scope hierarchy prevents collisions.
-- Local responsibility because each component owns only its own scope segment.
-- Better developer experience by focusing on logic, styles, and HTML semantics.
-- Component changes can happen without updating test IDs.
+const FormFieldInput = (props) => {
+  return (
+    <DataTestId value="input">
+      <input {...props} />
+    </DataTestId>
+  );
+};
 
-## How it works
+const FormSubmitButton = (props) => {
+  return (
+    <DataTestId value="submit">
+      <button type="button" {...props} />
+    </DataTestId>
+  );
+};
 
-Workflow summary:
+<DataTestIdRoot value="profile">
+  <Form>
+    <DataTestIdScope value="form">
+      <DataTestId value="email">
+        <FormFieldLabel>Email</FormFieldLabel>
+      </DataTestId>
+      <DataTestId value="email">
+        <FormFieldInput type="text" />
+      </DataTestId>
+      <DataTestId value="save">
+        <FormSubmitButton>Save</FormSubmitButton>
+      </DataTestId>
+    </DataTestIdScope>
+  </Form>
+</DataTestIdRoot>;
+```
+
+**Generated HTML:**
+
+```html
+<form data-testid="profile-form">
+  <label data-testid="profile-form-email-label">Email</label>
+  <input data-testid="profile-form-email-input" />
+  <button data-testid="profile-form-save">Save</button>
+</form>
+```
+
+How this approach resolves the earlier issues:
+
+- Uniqueness and collisions: each element receives the full scope path, so repeated components stay unique across branches and lists.
+- Maintainability: IDs are composed from short, readable segments instead of long manual strings.
+- Reusability: leaf components own their segment and do not need parent‑specific IDs.
+- Tight coupling: selectors express intent rather than reflecting the DOM structure or layout.
+- Inconsistency: shared configuration and naming patterns enforce consistent segments.
+- Non‑meaningful values: segments represent domain intent (`profile`, `details`, `email`).
+- Developer experience: less manual wiring, fewer breakages, and easier refactors.
+
+More detailed explanations appear in `In a nutshell`, `What is scope`, and `How scope generates test IDs`.
+
+## In a nutshell
+
+A quick overview of how the scope chain becomes a test ID:
 
 1. `DataTestIdRoot` starts a scope at a page, feature, or component boundary.
 2. `DataTestId` adds one segment to its current hierarchy and applies the joined scope to its child.
@@ -139,7 +270,11 @@ yarn add react-data-test-id
 
 ## What is scope?
 
-A scope is the current path of segments in the component hierarchy. Each segment is a meaningful label like `page`, `section`, or `button`. The `data-testid` is the joined scope path at that hierarchy level.
+A scope is the current path of segments in the component hierarchy. Each segment is a meaningful label like `page`, `section`, or `button`. A scope captures the real‑world context of a component in the UI, not the React context API.
+
+Scope values act like a path: the root segment establishes the top‑level context, and each nested segment refines that context. The scope is not an ID by itself. The `data-testid` is the joined scope path at that hierarchy level. It's covered in detail under section `Test IDs generation through scope hierarchy`.
+
+For clarity and stability, scope values should represent intent rather than layout or styling. Intent‑based naming keeps test IDs predictable as the UI evolves. The `Best practices` section contains naming guidance and examples.
 
 ### Example
 
@@ -167,14 +302,29 @@ A scope is the current path of segments in the component hierarchy. Each segment
 </div>
 ```
 
-## Scope hierarchy and test IDs generation
+## How scope generates test IDs
 
-Scope hierarchy is built from the `value` passed to each `DataTestIdRoot`, `DataTestIdScope`, and `DataTestId`.
-Each segment is appended in the same hierarchical order, and the final `data-testid` is the joined path at every scope level in the hierarchy.
+Scope hierarchy is built from the values passed at each hierarchy level. Specifically, the values passed to each `DataTestIdRoot` or `DataTestIdRootScope`, `DataTestIdScope`, and `DataTestId` in the component hierarchy. Each segment is appended in the same hierarchical order, and the final `data-testid` is the joined path at every scope level in the hierarchy.
 
-Each scope level represents the full path from the root to that node, not just the last segment.
+`DataTestIdRoot` or `DataTestIdRootScope` is useful for deliberate boundaries. It resets the scope chain for a subtree while keeping the same configuration. This makes it possible to keep IDs meaningful inside an isolated section without inheriting the outer path.
 
-This keeps the resulting `data-testid` values stable, predictable, and unique across the component tree.
+Each scope level represents the full path from the root to that node, not just the last segment. This is the key rule that keeps IDs stable and prevents collisions when the same component appears in different parts of the UI.
+
+Core rules for generation:
+
+- `DataTestIdRoot` or `DataTestIdRootScope` starts the scope and can reset it for a subtree.
+- `DataTestIdScope` extends the scope without applying an attribute.
+- `DataTestId` extends the scope and applies the attribute to its child.
+- Empty or undefined segments are ignored when building the path.
+- `scopeSeparator` and `scopeTransformers` are applied globally before the attribute is set, so values remain consistent across the application.
+  Each component and method is covered in its respective section, such as `Transformers` and `Components`, later in the documentation.
+
+Practical interpretation:
+
+- A change in a higher‑level scope segment updates all child IDs under that branch.
+- A change in a branch or leaf scope segment affects only that element and its descendants.
+- Reusing the same component in different scopes produces unique IDs with the same local naming.
+- The same branch or leaf name can appear in multiple branches without collisions because the full path differs.
 
 ### Flow chart
 
@@ -224,7 +374,7 @@ DataTestIdRoot("app")                         → "app"
       └─ DataTestId("reset")                  → "app-settings-form-reset"
 ```
 
-Same components used in different scopes generate predictable, unique test IDs:
+Same components used in different hierarchies generate predictable, unique test IDs:
 
 ```
 - Details under "profile"  → "app-profile-details"
@@ -248,13 +398,36 @@ Same components used in different scopes generate predictable, unique test IDs:
 - CancelButton under "settings" → "app-settings-form-cancel"
 ```
 
-## Usage examples
+## Usage
+
+This section demonstrates two representative UI flows: a data‑driven page and a form. The goal is to show how scope is built across hierarchy levels, how parent components define context, and how leaf components contribute their own segments without needing to know the full path.
+
+The examples are structured around three recurring patterns:
+
+- A root boundary sets the page or feature scope.
+- Mid‑level components add grouping segments for layout or sections.
+- Leaf components apply their own segment and render the final `data-testid`.
+
+Usage guidance:
+
+- Start with `DataTestIdRoot` or `DataTestIdRootScope` at a page, feature, or module boundary.
+- Use `DataTestId` inside reusable components so branch and leaf elements define their own segments.
+- Use `DataTestIdScope` to create a layout or grouping boundary without applying an attribute.
+- Reset the scope with `DataTestIdRoot` or `DataTestIdRootScope` when a subtree should be isolated.
+- Keep segment names intent‑based; the `Best practices` section provides naming guidance.
 
 ### Page
 
-Core components like Label, Value, and Item apply `DataTestId` internally for their own scope. Parent components add their own `DataTestId` for the surrounding hierarchy.
+This example focuses on a read‑only details page. The page creates a root scope (`profile`), and each nested component adds its own segment. The leaf components (`label` and `value`) apply the attribute, while intermediate components shape the hierarchy.
 
-This example shows a details section that renders label-value pairs.
+Scope breakdown for this example:
+
+- Page root: `profile`
+- Section: `details`
+- Row key: `name` or `email`
+- Leaf roles: `label` and `value`
+
+Core components like Label, Value, and Item apply `DataTestId` internally for their own scope. Parent components add their own `DataTestId` for the surrounding hierarchy.
 
 **\<H3 />**
 
@@ -414,6 +587,16 @@ const Details = (props) => {
 ```
 
 ### Form
+
+This example shows a form with fields and actions. The form sits under a root scope (`edit-profile`) and uses nested scopes for fields and actions. Field components and buttons apply their own segments, while the form and field components create the structural context.
+
+Scope breakdown for this example:
+
+- Page root: `edit-profile`
+- Form: `form`
+- Field key: `name` or `email`
+- Field roles: `label` and `input`
+- Actions: `submit` and `cancel` grouped under their own scopes
 
 Core components like Input, Button, and Field apply `DataTestId` internally for their own scope. Parent components add their own `DataTestId` for the surrounding hierarchy.
 
@@ -688,7 +871,14 @@ const App = () => {
 
 ## Transformers
 
-Transformers are used to normalize or enforce conventions on scope hierarchy segments.
+Transformers normalize or enforce conventions on scope hierarchy segments. Each transformer runs on every scope segment before the segments are joined. This means the scope path is built from transformed values, not the original inputs, which keeps IDs consistent across the hierarchy.
+
+Key points:
+
+- Transformers apply to each segment, not to the final joined ID.
+- Order matters: the output of one transformer becomes the input to the next.
+- Empty results are still treated as segments; if a transformer removes content completely, that segment may be ignored during joining.
+- The same transformer list applies to all scopes within the configuration boundary.
 
 ### Available transformers
 
@@ -785,7 +975,13 @@ const App = () => {
 
 ### DataTestIdRoot
 
-Starts or resets the root scope in the hierarchy and applies the scope as data test ID attribute to its child, if `enabled` in configuration.
+Starts or resets the root scope in the hierarchy and applies the scope as a data test ID attribute to its child. This component defines the top‑level boundary for a page, feature, or isolated subtree.
+
+Common usage:
+
+- Place at the outermost element of a page or feature.
+- Use to deliberately reset scope for an isolated subtree.
+- Use for coarse, human‑readable scope segments such as `profile`, `settings`, or `checkout`.
 
 ```tsx
 <DataTestIdRoot value="page">
@@ -813,7 +1009,12 @@ Starts or resets the root scope in the hierarchy and applies the scope as data t
 
 ### DataTestIdRootScope
 
-Resets the scope chain. Use this when a subtree should start a new scope.
+Resets the scope chain without applying a data test ID. Use this when a subtree should start a new scope while keeping the same configuration.
+
+Common usage:
+
+- Wrap modals, drawers, or overlays that should not inherit parent scope.
+- Create isolated scope boundaries for reusable widgets embedded in different pages.
 
 ```tsx
 <DataTestIdRoot value="page">
@@ -843,7 +1044,12 @@ Resets the scope chain. Use this when a subtree should start a new scope.
 
 ### DataTestId
 
-Sets the scope segment in the hierarchy and applies the resulting data test ID to its child, if `enabled` in the configuration.
+Sets the scope segment in the hierarchy and applies the resulting data test ID to its child. This is the primary building block for leaf elements and reusable components.
+
+Common usage:
+
+- Wrap a UI element so it contributes a stable segment to the hierarchy.
+- Place inside reusable components so each component defines its own segment.
 
 ```tsx
 <DataTestIdRootScope value="page">
@@ -871,7 +1077,12 @@ Sets the scope segment in the hierarchy and applies the resulting data test ID t
 
 ### DataTestIdScope
 
-Adds a scope segment in the hierarchy without applying an attribute. Useful for layout boundaries.
+Adds a scope segment in the hierarchy without applying an attribute. This is useful for layout boundaries, grouping, or sections where no DOM element should receive a data test ID.
+
+Common usage:
+
+- Group controls within a toolbar or filter panel.
+- Add a semantic boundary for a list, card group, or action set.
 
 ```tsx
 <DataTestIdRootScope value="page">
@@ -911,9 +1122,13 @@ Adds a scope segment in the hierarchy without applying an attribute. Useful for 
 
 ## Best practices
 
-### Leaf scopes
+These practices keep scope values consistent, make test IDs predictable, and reduce churn as components evolve. Each subsection highlights a common design pattern that scales across larger component trees.
 
-Apply `DataTestId` inside core UI components (Button, Input, Label, Select) so every usage is automatically tagged. This removes the need to re-apply test IDs for each usage. This keeps the test IDs consistent and predictable across the application.
+### Branch and leaf scopes
+
+Apply `DataTestId` inside core UI components (Button, Input, Label, Select) so every usage is automatically tagged. This removes the need to re‑apply test IDs for each usage and keeps IDs consistent across the application.
+
+This pattern keeps leaf responsibilities local: each leaf component defines its own segment and does not depend on parent context details.
 
 #### Example
 
@@ -972,6 +1187,8 @@ const PageSearchSection = () => {
 Add IDs at multiple levels of the hierarchy; the scope chain keeps them unique without manual concatenation.
 
 In the example below, the `<Details />` component uses scope `details`, and `<DetailsItem />` receives a dynamic scope via props. This keeps scope decisions at the component level and removes the need to manage hierarchy when generating test IDs.
+
+This approach works well for content‑driven pages where sections and rows are built from reusable components.
 
 #### Example
 
@@ -1082,6 +1299,8 @@ const ProfilePage = () => {
 
 Apply scopes based on usage context (not React context). For example, `<Input />` can use `input`, and a reusable `<SearchInput />` can add `search` and reuse `<Input />`. This adds `search` to the hierarchy and produces `search-input`.
 
+Contextual scopes help express intent at the point of composition while keeping leaf components generic.
+
 #### Example
 
 ```tsx
@@ -1150,6 +1369,8 @@ Apply scope boundaries where the scope needs to be reset on purpose. Examples in
 
 In the example below, the page has sections for totals, categories, locations, and geography. Each section can reuse the same components and set its own scope without applying an attribute.
 
+Boundary scopes are most useful when reusing the same module across different screens and avoiding long inherited paths.
+
 ```tsx
 const SalesTotals = () => {
   return (
@@ -1206,9 +1427,17 @@ const Page = () => {
 };
 ```
 
+### Configuration conventions
+
+Use configuration to keep naming rules consistent across the application. For example, transformers can normalize casing and spacing, and the scope separator can reflect team conventions.
+
+Centralizing conventions prevents drift between teams and keeps test IDs stable across features.
+
 ### Short but meaningful
 
 Use meaningful, context‑based names like `profile`, `age`, `email`, `save`, or `filters`.
+
+Short names reduce noise in the final ID while still capturing intent. Prefer domain language over structural or visual terms.
 
 #### Example
 
@@ -1237,6 +1466,8 @@ Use meaningful, context‑based names like `profile`, `age`, `email`, `save`, or
 ### Scope as path
 
 Treat scope segments like a path: page → section → component → element.
+
+This mental model helps choose the right scope depth and makes it easier to reason about where an ID belongs in the hierarchy.
 
 #### Example
 
