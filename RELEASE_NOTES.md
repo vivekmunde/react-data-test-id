@@ -1,5 +1,15 @@
 # Release Notes
 
+## v1.0.1
+
+### Highlights:
+
+- Documentation refresh focused on scope, usage, and best practices.
+
+### Breaking changes:
+
+- Spell fix: `scopeTrasnformers` -> `scopeTransformers`.
+
 ## v1.0.0
 
 Initial public release of `react-data-test-id`.
